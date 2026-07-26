@@ -80,44 +80,51 @@ function deleteQuestion(id) {
     }
 }
 
-// --- Sync Data Functions (Phone <-> Laptop) ---
+// --- File Sync Functions (No size limit) ---
 
-function exportData() {
+function exportToFile() {
     const data = localStorage.getItem('kids_questions');
     if (!data || data === '[]') return alert("No questions to export!");
     
-    // تشفير البيانات لتجنب أي مشاكل أو مسافات عند النسخ
-    const encodedData = btoa(encodeURIComponent(data)); 
-    document.getElementById('sync-code').value = encodedData;
+    // إنشاء ملف JSON وتنزيله تلقائياً على الهاتف
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `kids_questions_${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
     
-    // محاولة نسخ النص تلقائياً للحافظة
-    navigator.clipboard.writeText(encodedData).then(() => {
-        alert("✅ Code copied! Send it to your laptop (e.g. via WhatsApp/Notes) and paste it there.");
-    }).catch(err => {
-        alert("Code generated! Please copy the text inside the box manually.");
-    });
+    alert("✅ Backup file downloaded successfully! Send this file to your laptop (via WhatsApp, Telegram, or Email).");
 }
 
-function importData() {
-    const code = document.getElementById('sync-code').value.trim();
-    if (!code) return alert("❌ Please paste the code first!");
+function importFromFile() {
+    const fileInput = document.getElementById('import-file-input');
+    if (fileInput.files.length === 0) return alert("❌ Please select the backup file first!");
     
-    try {
-        // فك التشفير
-        const decodedData = decodeURIComponent(atob(code));
-        
-        // التأكد من أن البيانات الناتجة هي مصفوفة أسئلة صحيحة
-        const parsed = JSON.parse(decodedData);
-        if (Array.isArray(parsed)) {
-            localStorage.setItem('kids_questions', decodedData);
-            renderQuestions(); // تحديث القائمة فوراً
-            document.getElementById('sync-code').value = ''; // تنظيف المربع
-            alert("🎉 Questions imported successfully! You can start the game now.");
-        } else {
-            throw new Error("Invalid format");
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+        try {
+            const content = e.target.result;
+            const parsed = JSON.parse(content);
+            
+            if (Array.isArray(parsed)) {
+                localStorage.setItem('kids_questions', content);
+                renderQuestions(); // تحديث القائمة فوراً
+                fileInput.value = ''; // تنظيف اختيار الملف
+                alert("🎉 Questions imported successfully from file! You can start the game now.");
+            } else {
+                throw new Error("Invalid format");
+            }
+        } catch(err) {
+            alert("❌ Invalid file format! Make sure you selected the correct backup file.");
+            console.error(err);
         }
-    } catch(e) {
-        alert("❌ Invalid code! Make sure you copied the whole text.");
-        console.error(e);
-    }
+    };
+    
+    reader.readAsText(file);
 }
