@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids Challenge Game 🏆</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="floating-shapes"></div>
+    <div class="container home-container">
+        <header class="hero">
+            <h1 class="bounce-in">🏆 Kids Challenge</h1>
+            <p class="subtitle">The Ultimate Live Competition Game!</p>
+        </header>
+
+        <main class="teams-setup">
+            <div class="team-card team1-card">
+                <h2>Team 1</h2>
+                <input type="text" id="t1-name" value="The Lions">
+                <div class="emoji-picker" id="t1-emoji-picker">
+                    <span class="active">🦁</span><span>🐯</span><span>🐻</span><span>🐺</span>
+                </div>
+                <input type="color" id="t1-color" value="#ff9800">
+            </div>
+
+            <div class="vs-badge">VS</div>
+
+            <div class="team-card team2-card">
+                <h2>Team 2</h2>
+                <input type="text" id="t2-name" value="The Eagles">
+                <div class="emoji-picker" id="t2-emoji-picker">
+                    <span class="active">🦅</span><span>🦉</span><span>🦋</span><span>🦖</span>
+                </div>
+                <input type="color" id="t2-color" value="#03a9f4">
+            </div>
+
+            <div class="vs-badge">VS</div>
+
+            <div class="team-card team3-card">
+                <h2>Team 3</h2>
+                <input type="text" id="t3-name" value="The Sharks">
+                <div class="emoji-picker" id="t3-emoji-picker">
+                    <span class="active">🦈</span><span>🐬</span><span>🐊</span><span>🐢</span>
+                </div>
+                <input type="color" id="t3-color" value="#4caf50">
+            </div>
+        </main>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary pulse" onclick="startGame()">▶ START GAME</button>
+            <div class="secondary-actions">
+                <button class="btn btn-secondary" onclick="window.location.href='admin.html'">⚙️ ADMIN PANEL</button>
+                <button class="btn btn-secondary" onclick="resetData()">🗑️ RESET DATA</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="storage.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

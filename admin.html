@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel ⚙️</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>⚙️ Admin Dashboard</h1>
+            <button class="btn btn-secondary" onclick="window.location.href='index.html'">🏠 Back to Home</button>
+        </header>
+
+        <main class="admin-grid">
+            <!-- Add Question Form -->
+            <section class="card">
+                <h2>➕ Add New Question</h2>
+                <form id="add-q-form">
+                    
+                    <div class="form-group">
+                        <label>Audio File (MP3/WAV)</label>
+                        <input type="file" id="q-audio-file" accept="audio/*" required>
+                        <small class="warn">Use compressed audio to save storage space.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mini Game Type</label>
+                        <select id="q-minigame">
+                            <option value="balloonPop">1. Balloon Pop 🎈</option>
+                            <option value="memoryCards">2. Memory Cards 🃏</option>
+                            <option value="mathPuzzle">3. Math Puzzle ➕</option>
+                            <option value="findGreen">4. Find the Green Color 🟩</option>
+                            <option value="catchStar">5. Catch the Star ⭐</option>
+                            <option value="sortNumbers">6. Sort Numbers (1 to 5) 🔢</option>
+                            <option value="oddOneOut">7. Find the Odd Emoji 🍓</option>
+                            <option value="blueBubbles">8. Pop Blue Bubbles 🔵</option>
+                            <option value="feedMonkey">9. Fast Tap (Feed Monkey) 🍌</option>
+                            <option value="spellWord">10. Spell Word (C-A-T) 🔤</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Points (Difficulty)</label>
+                        <select id="q-points">
+                            <option value="5">Easy (5 Pts)</option>
+                            <option value="10">Medium (10 Pts)</option>
+                            <option value="20">Hard (20 Pts)</option>
+                        </select>
+                    </div>
+
+                    <div class="answers-inputs">
+                        <div class="ans-row">
+                            <input type="radio" name="correct-ans" value="0" checked>
+                            <input type="text" id="ans-in-0" placeholder="Answer 1" required>
+                        </div>
+                        <div class="ans-row">
+                            <input type="radio" name="correct-ans" value="1">
+                            <input type="text" id="ans-in-1" placeholder="Answer 2" required>
+                        </div>
+                        <div class="ans-row">
+                            <input type="radio" name="correct-ans" value="2">
+                            <input type="text" id="ans-in-2" placeholder="Answer 3" required>
+                        </div>
+                        <div class="ans-row">
+                            <input type="radio" name="correct-ans" value="3">
+                            <input type="text" id="ans-in-3" placeholder="Answer 4" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width:100%; margin-top:20px; padding: 10px;">💾 Save Question</button>
+                </form>
+            </section>
+
+            <!-- Questions List -->
+            <section class="card">
+                <h2>📋 Question Bank (<span id="q-count">0</span>)</h2>
+                <div id="questions-list" class="q-list"></div>
+            </section>
+
+            <!-- Sync Data Section (Phone <-> Laptop) -->
+            <section class="card" style="grid-column: 1 / -1; background: #e3f2fd;">
+                <h2>🔄 Sync Data (Phone ↔ Laptop)</h2>
+                <p>1. On your phone: Click Export and copy the code.<br>2. On your laptop: Paste the code here and click Import.</p>
+                
+                <textarea id="sync-code" rows="4" style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 8px; font-family: monospace; border: 1px solid #ccc;" placeholder="Paste sync code here..."></textarea>
+                
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-secondary" onclick="exportData()" style="flex: 1; min-width: 250px;">📤 1. Export (Copy from Phone)</button>
+                    <button class="btn btn-primary" onclick="importData()" style="flex: 1; margin: 0; min-width: 250px; padding: 15px 30px; font-size: 1.2rem;">📥 2. Import (Paste on Laptop)</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="storage.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
