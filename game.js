@@ -1,6 +1,7 @@
 let teams = Storage.getTeams();
 let questions = Storage.getQuestions();
-let remainingQuestions = []; // لمنع التكرار
+// نسخ جميع الأسئلة وتصفيتها لضمان عدم التكرار طوال اللعبة
+let remainingQuestions = [...questions]; 
 let currentTurn = Storage.getTurn() - 1; // 0 for T1, 1 for T2, 2 for T3
 let currentQuestion = null;
 let audioPlayer = document.getElementById('q-audio');
@@ -29,7 +30,7 @@ function setupTurnScreen() {
     document.getElementById('turn-text').innerText = `${activeTeam.name}'s Turn!`;
     document.getElementById('turn-text').style.color = activeTeam.color;
     
-    // Highlight active team scoreboard
+    // إبراز الفريق صاحب الدور الحالي في لوحة النتائج
     for(let i=1; i<=3; i++) {
         let el = document.getElementById(`score-t${i}`);
         if(i - 1 === currentTurn) {
@@ -49,18 +50,24 @@ function setupTurnScreen() {
 async function startTurn() {
     document.getElementById('turn-indicator').classList.add('hidden');
     
+    // التحقق مما إذا كانت الأسئلة قد انتهت تماماً
     if(questions.length === 0) {
         alert("No questions available! Please add questions in the Admin Panel.");
         return;
     }
     
+    // إذا نفدت جميع الأسئلة، إنهاء اللعبة تلقائياً وإظهار الفائزين
     if(remainingQuestions.length === 0) {
-        remainingQuestions = [...questions];
+        alert("🏁 All questions have been finished! Let's see who won the challenge!");
+        showPodium();
+        return;
     }
     
+    // اختيار سؤال عشوائي من الأسئلة المتبقية فقط (يمنع التكرار تماماً)
     const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
     currentQuestion = remainingQuestions[randomIndex];
     
+    // حذف السؤال من القائمة لكي لا يتكرر أبداً
     remainingQuestions.splice(randomIndex, 1);
 
     const mgContainer = document.getElementById('mini-game-container');
@@ -104,10 +111,12 @@ function togglePlay() {
         btn.innerText = '▶️';
     }
 }
+
 function replayAudio() {
     audioPlayer.currentTime = 0;
     audioPlayer.play();
 }
+
 document.getElementById('volume-control').addEventListener('input', (e) => {
     audioPlayer.volume = e.target.value;
 });
@@ -160,14 +169,18 @@ function switchTurn() {
     document.getElementById('question-container').classList.add('hidden');
     audioPlayer.pause();
     
-    currentTurn = (currentTurn + 1) % 3; // يلف بين 3 فرق (0, 1, 2)
+    currentTurn = (currentTurn + 1) % 3; // التبديل بين الـ 3 فرق بترتيب منظم (0 -> 1 -> 2 -> 0)
     Storage.setTurn(currentTurn + 1);
     setupTurnScreen();
 }
 
 function endGameManually() {
     if(!confirm("Are you sure you want to end the game and announce the winners?")) return;
-    
+    showPodium();
+}
+
+// دالة عرض منصة التتويج المشتركة (تستدعى تلقائياً أو يدوياً)
+function showPodium() {
     let sortedTeams = [...teams].sort((a, b) => b.score - a.score);
     
     document.body.innerHTML = `
