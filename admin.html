@@ -80,16 +80,24 @@
                 <div id="questions-list" class="q-list"></div>
             </section>
 
-            <!-- Sync Data Section (Phone <-> Laptop) -->
+            <!-- Sync Data via File (Phone <-> Laptop) -->
             <section class="card" style="grid-column: 1 / -1; background: #e3f2fd;">
-                <h2>🔄 Sync Data (Phone ↔ Laptop)</h2>
-                <p>1. On your phone: Click Export and copy the code.<br>2. On your laptop: Paste the code here and click Import.</p>
+                <h2>🔄 Sync Questions via File (Phone ↔ Laptop)</h2>
+                <p>Because audio files are large, file-sharing is much faster and cleaner than copying text!</p>
                 
-                <textarea id="sync-code" rows="4" style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 8px; font-family: monospace; border: 1px solid #ccc;" placeholder="Paste sync code here..."></textarea>
-                
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button class="btn btn-secondary" onclick="exportData()" style="flex: 1; min-width: 250px;">📤 1. Export (Copy from Phone)</button>
-                    <button class="btn btn-primary" onclick="importData()" style="flex: 1; margin: 0; min-width: 250px; padding: 15px 30px; font-size: 1.2rem;">📥 2. Import (Paste on Laptop)</button>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+                    <div style="flex: 1; min-width: 280px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                        <h3>1. On your Phone:</h3>
+                        <p style="font-size: 0.9rem; color: #666; margin: 10px 0;">After adding questions, click here to download the backup file.</p>
+                        <button class="btn btn-secondary" onclick="exportToFile()" style="width: 100%;">📥 Download Backup File</button>
+                    </div>
+                    
+                    <div style="flex: 1; min-width: 280px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                        <h3>2. On your Laptop:</h3>
+                        <p style="font-size: 0.9rem; color: #666; margin: 10px 0;">Select the downloaded file and import it.</p>
+                        <input type="file" id="import-file-input" accept=".json" style="margin-bottom: 10px; width: 100%; padding: 8px; background: #f9f9f9; border-radius: 8px; border: 1px solid #ccc;">
+                        <button class="btn btn-primary" onclick="importFromFile()" style="width: 100%; margin: 0; padding: 12px; font-size: 1.1rem;">📤 Upload & Import File</button>
+                    </div>
                 </div>
             </section>
         </main>
